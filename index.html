@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  
+  <title>Frontend Mentor | Age calculator app</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    @font-face {
+      font-family: Hanken;
+      src: url(./assets/fonts/Poppins-Regular.ttf)
+    }
+    * {
+      padding: 0;
+      margin: 0;
+      font-family:Hanken
+    }
+    body {
+      background: whitesmoke;
+    }
+    label {
+      font-size: 10px;
+      font-weight: bold;
+      color: #00000079;
+      letter-spacing: px
+    }
+    h1 {
+      font-style: italic;
+    }
+    
+    input {
+      width:100px;
+      display: block;
+      text-indent: 10px;
+      font-weight: bold;
+      height:40px;
+      border: 1px solid rgba(0, 0, 0, 0.185);
+      border-radius: 4px;
+    }
+    hr {
+      margin: 30px 0;
+       border: 1px solid rgba(0, 0, 0, 0.247);
+    }
+    
+    img {
+      background-color: purple;
+      border-radius: 50%;
+      padding: 10px;
+      position: absolute;
+      right: 15px;
+      top:100px;
+    }
+    p {
+      font-size: 9px;
+      width: 100px;
+      font-style: italic;
+      color: rgba(255, 0, 0, 0.63);
+      margin-top: 3px;
+      display: none;
+    }
+    .flex {
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      width: 340px;
+      position: relative;
+      border-radius: 10px 10px 70px 10px;
+      background-color: white;
+      padding:20px
+    }
+    .age {
+      color:purple
+    }
+    .date {
+      display:flex;
+      gap:15px
+    }
+    .error label input {
+      border: 1px solid rgba(255, 0, 0, 0.63);
+    }
+    .error label {
+      color:rgba(255, 0, 0, 0.63)
+    }
+    @media (max-width:500px) {
+      .container {
+        width: 80%;
+      }
+      input {
+        width: 80%;
+      }
+      img {
+      background-color: purple;
+      border-radius: 50%;
+      padding: 10px;
+      position: absolute;
+      right: 42%;
+      top:100px;
+    }
+    }
+
+
+    .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }
+  </style>
+</head>
+<body>
+  <div class="flex">
+    <div class="container">
+      <form class="date">
+        <div class="day">
+          <label for="day">DAY
+            <input type="number" name="day" placeholder="DD" id="day">
+          </label>  
+          <p class="empty">This field is required</p>
+          <p class="invalid">Must be a valid day</p>
+          <p class="invalid-date">Must be a valid date</p>
+        <p class="future">Must be in the present or past</p>
+
+
+        </div>
+        <div class="month">
+          <label for="month">MONTH
+            <input type="number" name="month" placeholder="MM" id="month">
+          </label>
+          <p class="empty">This field is required</p>
+          <p class="invalid">Must be a valid month</p>
+        <p class="future">Must be in the present or past</p>
+
+
+        </div>
+        <div class="year">
+         <label for="year">YEAR
+          <input type="number" name="year" placeholder="YYYY" id="year">
+        </label> 
+        <p class="empty">This field is required</p>
+        <p class="invalid">Must be in the past</p>
+        </div>
+      </form>
+      <hr>
+      
+      <img onclick="displayAge()" width="20px" src="./assets/images/icon-arrow.svg" alt="" >
+      <h1> <span class="years age">-- </span>Year<span class="ys"></span></h1>
+      <h1> <span class="months age">-- </span>Month<span class="ms"></span></h1>
+      <h1> <span class="days age">-- </span>Day<span class="ds"></span></h1>
+      
+    </div>
+  </div>
+
+ 
+  
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Coded by <a href="#">Your Name Here</a>.
+  </div>
+
+  <script>
+    document.addEventListener("keypress" ,(event) => {
+      if (event.key === "Enter") {
+        displayAge()
+      }
+    })
+
+      function displayAge() {
+        var daysLived = ''
+        var monthsLived = ''
+        var prevMonth = 31
+        var febDays = 28
+        var isLeap = false
+        var birthMonth = month.value
+        var currentMonth = (new Date().getMonth() +1).toString()
+        var currentYear = (new Date().getFullYear()).toString()
+        var yearsLived = new Date().getFullYear() - year.value 
+
+        // Calculate Leap Year
+        function calcLeap(year) {
+          if (year % 4 === 0) {
+            if (year % 100 !== 0) {
+              if (year % 400 !== 0) {
+                isLeap = true
+                febDays = 29
+              }
+            }
+          }
+        }
+        calcLeap(year.value)
+
+        // Calculate Previous Month
+        if ( birthMonth === "10" | birthMonth === "5" | birthMonth === "7" | birthMonth === "12") {
+          prevMonth = 30
+        }
+
+        // Checks if inputs are empty
+        if (!year.value| !month.value | !day.value) {
+          document.querySelector(".year").classList.add("error")
+          document.querySelector(".month").classList.add("error")
+          document.querySelector(".day").classList.add("error")
+          
+          for(var i = 0; i < 3; i++) 
+          document.querySelectorAll(".empty")[i].style.display = "block"
+          if (day.value) {
+          document.querySelector(".day").classList.remove("error") 
+          document.querySelectorAll(".empty")[0].style.display = "none"
+          }
+          if (month.value) {
+          document.querySelector(".month").classList.remove("error") 
+          document.querySelectorAll(".empty")[1].style.display = "none"
+          }
+          if (year.value) {
+          document.querySelector(".year").classList.remove("error") 
+          document.querySelectorAll(".empty")[2].style.display = "none"
+
+          }
+          return
+        }
+        else {
+          document.querySelector(".year").classList.remove("error");
+          document.querySelector(".month").classList.remove("error");
+          document.querySelector(".day").classList.remove("error");
+          for(var i = 0; i < 3; i++) 
+          document.querySelectorAll(".empty")[i].style.display = "none"
+        }
+
+        // Checks if inputs equal Zero
+        if (day.value === "0" | month.value === 0 | year.value === 0) {
+    
+          document.querySelector(".day").classList.add("error")
+          document.querySelector(".month").classList.add("error")
+          document.querySelector(".year").classList.add("error")
+          return
+        }
+        else {
+          document.querySelector(".year").classList.remove("error");
+          document.querySelector(".month").classList.remove("error");
+          document.querySelector(".day").classList.remove("error");
+          for(var i = 0; i < 3; i++) 
+          document.querySelectorAll(".invalid")[i].style.display = "none"
+        }
+
+        // Checks if Dates are valid
+        if (day.value > 31 | month.value > 12 | year.value > new Date().getFullYear() ) {
+          document.querySelector(".day").classList.add("error")
+          document.querySelector(".month").classList.add("error")
+          document.querySelector(".year").classList.add("error")
+          for(var i = 0; i < 3; i++) 
+          document.querySelectorAll(".invalid")[i].style.display = "block"
+
+          if (day.value < 32) {
+          document.querySelector(".day").classList.remove("error") 
+          document.querySelectorAll(".invalid")[0].style.display = "none"
+          }
+          if (month.value < 13) {
+          document.querySelector(".month").classList.remove("error") 
+          document.querySelectorAll(".invalid")[1].style.display = "none"
+          }
+          if (year.value <= new Date().getFullYear() ) {
+          document.querySelector(".year").classList.remove("error") 
+          document.querySelectorAll(".invalid")[2].style.display = "none"
+          }
+          return
+        }
+        else {
+          document.querySelector(".year").classList.remove("error");
+          document.querySelector(".month").classList.remove("error");
+          document.querySelector(".day").classList.remove("error");
+          for(var i = 0; i < 3; i++) 
+          document.querySelectorAll(".invalid")[i].style.display = "none"
+        }
+
+        // Checks if february is a 29 or 28 days
+        if (birthMonth === "2") {
+          if (day.value > febDays) {
+          document.querySelector(".day").classList.add("error");
+          document.querySelector(".invalid-date").style.display = "block"
+          return
+          }
+          document.querySelector(".invalid-date").style.display = "none"
+        }
+
+        // Checks if days is higher on Months with 30days
+        if ( birthMonth === "9" | birthMonth === "4" | birthMonth === "6" | birthMonth === "11") {
+          if (day.value > 30) {
+          document.querySelector(".day").classList.add("error");
+          document.querySelector(".invalid-date").style.display = "block"
+          return
+          }
+          document.querySelector(".invalid-date").style.display = "none"
+        }
+
+        // Calculates Months Elapsed
+        if (month.value > new Date().getMonth()) {
+            monthsLived = (12 - month.value) + new Date().getMonth() + 1
+            yearsLived -= 1
+        }
+        else {
+          monthsLived =  new Date().getMonth() - month.value + 1 
+        }
+       
+        // Calculates Days Elapsed
+        if (day.value > new Date().getDate()) {
+            daysLived = (prevMonth - day.value) + new Date().getDate() 
+            monthsLived -= 1
+        }
+        else {
+          daysLived = new Date().getDate() - day.value
+        }
+        if (yearsLived === -1) {
+          yearsLived = 0
+        }
+        if (monthsLived === 12) {
+          monthsLived = 0
+        }
+
+        // Checks if Day and Month is in Future
+        if(year.value === currentYear) {
+          if(month.value > new Date().getMonth() + 1 ){
+          document.querySelector(".month").classList.add("error");
+          for(var i = 0; i < 2; i++) 
+          document.querySelectorAll(".future")[i].style.display = "block"
+
+          if(day.value <= new Date().getDate()) {
+          document.querySelector(".day").classList.remove("error");
+          document.querySelectorAll(".future")[0].style.display = "none"
+            }
+          if(month.value <= new Date().getMonth() + 1) {
+          document.querySelector(".month").classList.remove("error");
+          document.querySelectorAll(".future")[1].style.display = "none"
+            }
+            return
+          }
+          if (month.value === currentMonth ) {
+            alert("equal")
+            if (day.value > new Date().getDate()){
+               document.querySelector(".day").classList.add("error");
+              document.querySelectorAll(".future")[0].style.display = "block"
+              return
+            }
+          }
+          for(var i = 0; i < 2; i++) 
+          document.querySelectorAll(".future")[i].style.display = "none"
+          document.querySelector(".day").classList.remove("error");
+          document.querySelector(".month").classList.remove("error");
+
+        }
+
+        // Checks Plural of Day, Month and Year
+        if (yearsLived > 1 ) {
+          document.querySelector(".ys").textContent = "s"
+        }
+        else {
+          document.querySelector(".ys").textContent = ""
+
+        }
+        if (monthsLived > 1 ) {
+          document.querySelector(".ms").textContent = "s"
+        }
+        else {
+          document.querySelector(".ms").textContent = ""
+
+        }
+        if (daysLived > 1 ) {
+          document.querySelector(".ds").textContent = "s"
+        }
+        else {
+          document.querySelector(".ds").textContent = ""
+
+        }
+      
+        document.querySelector(".days").textContent = daysLived + " "
+        document.querySelector(".months").textContent = monthsLived + " "
+        document.querySelector(".years").textContent = yearsLived + " "
+    }
+  </script>
+</body>
+</html>
